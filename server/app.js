@@ -12,6 +12,7 @@ import morgan from 'morgan';
 //Routes
 import postRoutes from './routes/api/post';
 import userRoutes from './routes/api/user';
+import authRoutes from './routes/api/auth';
 
 
 const app = express();
@@ -27,7 +28,7 @@ app.use(morgan("dev"));
 app.use(express.json());
 
 mongoose.connect(MONGO_URI, {
-    useNewUrlParse: true,
+    useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
 })
@@ -38,6 +39,7 @@ mongoose.connect(MONGO_URI, {
 app.get('/');
 app.use('/api/post', postRoutes);
 app.use('/api/user', userRoutes);
+app.use('/api/auth', authRoutes);
 
 
 export default app;
