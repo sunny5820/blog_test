@@ -7,6 +7,6 @@ const App = () => {
       hellow
     </div>
   );
-}
+};
 
 export default App;
