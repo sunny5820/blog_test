@@ -15,7 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { CLEAR_ERROR_REQUEST, LOGIN_REQUEST } from '../../redux/types';
 
 const LoginModal = () => {
-    const [modal, setModal] = useState(false) //modal이 열려있는지, 닫혀있는지 확인
+    const [modal, setModal] = useState(false); //modal이 열려있는지, 닫혀있는지 확인
     const [localMsg, setLocalMsg] = useState('');
     const [form, setValues] = useState({
         email: "",
