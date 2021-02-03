@@ -7,7 +7,7 @@ const loginUserAPI = (loginData) => {
     console.log(loginData, "loginData");
     const config = {
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json" //postman에서의 설정
         }
     }
     return axios.post('api/auth', loginData, config)

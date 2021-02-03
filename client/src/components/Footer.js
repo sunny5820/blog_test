@@ -11,7 +11,9 @@ const Footer = () => {
         <div id="main-footer" className="text-center p-2">
             <Row>
                 <Col>
-                    <p>Copyright &copy;<spen>{thisYear()}</spen></p>
+                    <p>
+                        Copyright &copy; <span>{thisYear()}</span>
+                    </p>
                 </Col>
             </Row>
         </div>
