@@ -1,19 +1,29 @@
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux';
-import { NavLink } from 'react-router-dom';
-import { Modal, ModalHeader, ModalBody, FormGroup, Label, Input } from 'reactstrap';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+    NavLink,
+    Modal,
+    ModalHeader,
+    ModalBody,
+    FormGroup,
+    Label,
+    Input,
+    Form,
+    Alert,
+    Button,
+} from 'reactstrap';
 
 import { CLEAR_ERROR_REQUEST, REGISTER_REQUEST } from '../../redux/types';
 
 const RegisterModal = () => {
     const [modal, setModal] = useState(false);
-    const [form, setValue] = useState({
+    const [form, setValue] = useState({ //input을 사용할 경우 필수적인..
         name: "",
         email: "",
         password: ""
     });
     const [localMsg, setLocalMsg] = useState('');
-    const { } = useSelector((select) => state.auth);
+    const { errorMsg } = useSelector((state) => state.auth);
 
     const dispatch = useDispatch();
     const handleToggle = () => {
@@ -27,37 +37,37 @@ const RegisterModal = () => {
         try {
             setLocalMsg(errorMsg)
         } catch (e) {
-            console.log(e);
+            console.error(e);
         }
-    }, [errorMsg])
+    }, [errorMsg]);
 
     const onChange = (e) => {
         setValue({
             ...form,
-            [e.target.name]: e.target.value
-        })
-    }
+            [e.target.name]: e.target.value //input 값을 변화 시키고 저장하기위한 함수
+        });
+    };
 
-    const onSubmit = () => {
+    const onSubmit = (e) => {
         e.preventDefault();
         const { name, email, password } = form;
         const newUser = { name, email, password };
         console.log(newUser, "newUser");
-        dispatch({
+        dispatch({     //store.js로 보내진다.
             type: REGISTER_REQUEST,
             payload: newUser
-        })
-    }
+        });
+    };
     return (
         <div>
             <NavLink onClick={handleToggle} href="#">
                 Register
             </NavLink>
-            <Modal isOpen={modal} tpggle={handleToggle}>
+            <Modal isOpen={modal} toggle={handleToggle}>
                 <ModalHeader toggle={handleToggle}>Register</ModalHeader>
                 <ModalBody>
                     {localMsg ? <Alert color="danger">{localMsg}</Alert> : null}
-                    <Form onSubmit={onsubmit}>
+                    <Form onSubmit={onSubmit}>
                         <FormGroup>
                             <Label for="name">Name</Label>
                             <Input
@@ -84,7 +94,7 @@ const RegisterModal = () => {
                                 onChange={onChange}
                             />
                             <Button color="dark" className="mt-2" block>
-                                Reqister
+                                Register
                             </Button>
                         </FormGroup>
                     </Form>
@@ -94,3 +104,4 @@ const RegisterModal = () => {
     )
 };
 
+export default RegisterModal;
