@@ -9,7 +9,7 @@ const auth = (req, res, next) => {
         return res.status(401).json({ msg: "토큰이 없음. 인증이 거부됨!!" });
     };
     try {
-        const decoded = jwt.verify(toeken, JWT_SECRET);
+        const decoded = jwt.verify(token, JWT_SECRET);
         req.user = decoded;
         next();
     } catch (e) {

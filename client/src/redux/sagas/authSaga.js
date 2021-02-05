@@ -1,8 +1,14 @@
 import axios from 'axios';
 import { call, put, takeEvery, all, fork } from 'redux-saga/effects';
 import {
+    CLEAR_ERROR_FAILURE,
+    CLEAR_ERROR_REQUEST,
+    CLEAR_ERROR_SUCCESS,
     LOGIN_FAILURE, LOGIN_REQUEST, LOGIN_SUCCESS,
     LOGOUT_FAILURE, LOGOUT_REQUEST, LOGOUT_SUCCESS,
+    REGISTER_FAILURE,
+    REGISTER_REQUEST,
+    REGISTER_SUCCESS,
     USER_LOADING_FAILURE, USER_LOADING_REQUEST, USER_LOADING_SUCCESS
 } from '../types';
 
@@ -90,13 +96,57 @@ function* watchuserLoading() {
     yield takeEvery(USER_LOADING_REQUEST, userLoading) //매번 감시
 };
 
+//REGISTER
+const registerUserAPI = (req) => {
+    console.log(req, "req");
 
+    return axios.post('api/user', req);
+};
+
+function* registerUser(action) {
+    try {
+        const result = yield call(registerUserAPI, action.payload);
+        console.log(result, "RegisterUser Data");
+        yield put({
+            type: REGISTER_SUCCESS,
+            payload: result.data
+        })
+    } catch (e) {
+        yield put({
+            type: REGISTER_FAILURE,
+            payload: e.response
+        })
+    }
+};
+
+function* watchregisterUser() {
+    yield takeEvery(REGISTER_REQUEST, registerUser) //매번 감시
+};
+
+//CLEAR ERROR
+function* clearError(action) {
+    try {
+        yield put({
+            type: CLEAR_ERROR_SUCCESS,
+        });
+    } catch (e) {
+        yield put({
+            type: CLEAR_ERROR_FAILURE,
+        });
+    }
+};
+
+function* watchclearError() {
+    yield takeEvery(CLEAR_ERROR_REQUEST, clearError) //매번 감시
+};
 
 export default function* authSaga() {
     yield all([
         fork(watchLoginUser),
         fork(watchlogout),
         fork(watchuserLoading),
+        fork(watchregisterUser),
+        fork(watchclearError),
 
     ]);
 };
